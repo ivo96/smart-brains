@@ -1,9 +1,10 @@
 import React from 'react'
+// Face recognition 
 
-export default () => {
+export default ({ imageURL }) => {
   return (
-    <div>
-      <h1>FaceRecognition</h1>     
+    <div className='center'>
+      <img alt='sample' src={imageURL} />
     </div>
   )
 }

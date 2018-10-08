@@ -33,23 +33,29 @@ class App extends Component {
     super();
     this.state = {
       input: '', 
-
+      imageURL: '',
     }
   }
 
   onInputChange = (event) => {
-    console.log(event.target.value);  // vzima ot ImageLinkForm i go vadi v konzolata
+    //console.log(event.target.value);  // vzima ot ImageLinkForm i go vadi v konzolata
+    this.setState({
+      input: event.target.value,    // smenq propsa na input za da mojem da pokajem v FaceRecognition komponenta
+    })
   }
 
 
-  // to add image to after the form in FaceRecognition
-  // 
+
+  
   onButtonSubmit = () => {
-    console.log('click');
-    app.models.predict('a403429f2ddf4b49b307e318f00e528b', 
-    'https://www.sanger.ac.uk/sites/default/files/gaffney-group.jpg').then(
+    //console.log('click');
+    this.setState({
+      imageURL: this.state.input
+    });
+    app.models.predict('a403429f2ddf4b49b307e318f00e528b', //face recognition model
+    this.state.input).then(
       function(response) {
-        console.log(response);
+        console.log(response.outputs[0].data.regions[0].region_info.bounding_box);
       },
       function(err) {
         console.error(err);
@@ -67,7 +73,7 @@ class App extends Component {
         <ImageLinkForm 
           onInputChange={this.onInputChange}  
           onButtonSubmit={this.onButtonSubmit} />
-        <FaceRecognition />
+        <FaceRecognition imageURL={this.state.imageURL} />
         <Register />
         <Signin />
       </div>
